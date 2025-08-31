@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Resourl</string>
+
+    <!-- Add Resource Screen -->
+    <string name="add_resource_title">Add Resource</string>
+    <string name="add_resource_header_recent">Recent Resource</string>
+    <string name="add_resource_hint_url">https://resourl.com</string>
+    <string name="add_resource_delete_button">Delete</string>
+    <string name="add_resource_save_button">Done</string>
+</resources>
