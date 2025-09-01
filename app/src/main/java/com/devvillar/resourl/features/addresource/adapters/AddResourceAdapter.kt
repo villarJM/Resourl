@@ -11,8 +11,10 @@ import com.devvillar.resourl.features.addresource.adapters.viewholders.ExpandedI
 import com.devvillar.resourl.features.addresource.adapters.viewholders.NormalItemViewHolder
 import com.devvillar.resourl.features.addresource.adapters.viewholders.SpacerViewHolder
 
-class AddResourceAdapter(private var items: List<ResourceItem>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AddResourceAdapter(
+    private var items: List<ResourceItem>,
+    private val editClickListener: OnResourceEditClickListener? = null
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val TYPE_HEADER = 0
@@ -57,8 +59,8 @@ class AddResourceAdapter(private var items: List<ResourceItem>) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is HeaderViewHolder -> holder.bind()
-            is ExpandedItemViewHolder -> holder.bind(items.last())
-            is NormalItemViewHolder -> holder.bind(items[position])
+            is ExpandedItemViewHolder -> holder.bind(items.last(), editClickListener)
+            is NormalItemViewHolder -> holder.bind(items[position], editClickListener)
             is SpacerViewHolder -> { /* No binding needed */ }
         }
     }

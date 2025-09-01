@@ -5,6 +5,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.devvillar.resourl.R
 import com.devvillar.resourl.features.addresource.domain.ResourceItem
+import com.devvillar.resourl.features.addresource.adapters.OnResourceEditClickListener
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
@@ -15,8 +17,9 @@ class ExpandedItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val resourceDescription: TextView = itemView.findViewById(R.id.resource_description)
     private val categoryChip: Chip = itemView.findViewById(R.id.category_chip)
     private val tagsChipGroup: ChipGroup = itemView.findViewById(R.id.tags_chip_group)
+    private val editResourceButton: MaterialButton = itemView.findViewById(R.id.edit_resource_button)
 
-    fun bind(item: ResourceItem) {
+    fun bind(item: ResourceItem, editClickListener: OnResourceEditClickListener? = null) {
         resourceName.text = item.title
         resourceUrl.text = item.url
         resourceDate.text = item.date
@@ -41,6 +44,11 @@ class ExpandedItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 isCloseIconVisible = false
             }
             tagsChipGroup.addView(chip)
+        }
+
+        // Configurar el listener para el botón de editar
+        editResourceButton.setOnClickListener {
+            editClickListener?.onEditClick(item)
         }
     }
 }

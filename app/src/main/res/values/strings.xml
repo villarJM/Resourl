@@ -7,4 +7,18 @@
     <string name="add_resource_hint_url">https://resourl.com</string>
     <string name="add_resource_delete_button">Delete</string>
     <string name="add_resource_save_button">Done</string>
+
+    <!-- Edit Resource Screen -->
+    <string name="edit_resource_title">Edit Resource</string>
+    <string name="edit_resource_label_url">Resource URL</string>
+    <string name="edit_resource_label_title">Resource Title</string>
+    <string name="edit_resource_label_description">Description</string>
+    <string name="edit_resource_label_category">Category</string>
+    <string name="edit_resource_label_tags">Tags</string>
+    <string name="edit_resource_hint_url">https://resourl.com</string>
+    <string name="edit_resource_hint_title">Resource name</string>
+    <string name="edit_resource_hint_description">Brief description of what you use this resource for…</string>
+    <string name="edit_resource_hint_category">Add new or search category</string>
+    <string name="edit_resource_hint_tags">Add new or search tags</string>
+    <string name="edit_resource_update_button">Update Resource</string>
 </resources>

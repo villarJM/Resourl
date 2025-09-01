@@ -5,15 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.devvillar.resourl.R
 import com.devvillar.resourl.features.addresource.adapters.AddResourceAdapter
+import com.devvillar.resourl.features.addresource.adapters.OnResourceEditClickListener
+import com.devvillar.resourl.features.addresource.domain.ResourceItem
+import com.devvillar.resourl.features.addresource.presentation.models.ResourceData
 import com.devvillar.resourl.features.addresource.presentation.viewmodels.AddResourceViewModel
 
-class AddResourceFragment : Fragment() {
+class AddResourceFragment : Fragment(), OnResourceEditClickListener {
 
     private lateinit var viewModel: AddResourceViewModel
     private lateinit var adapter: AddResourceAdapter
@@ -44,8 +46,26 @@ class AddResourceFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.resourceItems.observe(viewLifecycleOwner) { items ->
-            adapter = AddResourceAdapter(items)
+            adapter = AddResourceAdapter(items, this)
             view?.findViewById<RecyclerView>(R.id.recycler_view_add_resource)?.adapter = adapter
         }
+    }
+
+    override fun onEditClick(resourceItem: ResourceItem) {
+
+        val resourceData = ResourceData(
+            id = resourceItem.id,
+            title = resourceItem.title,
+            url = resourceItem.url,
+            description = resourceItem.description,
+            category = resourceItem.category,
+            tags = resourceItem.tags,
+            date = resourceItem.date
+        )
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.container_fragment, EditResourceFragment.newInstance(resourceData))
+            .addToBackStack(null)
+            .commit()
     }
 }

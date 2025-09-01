@@ -67,6 +67,7 @@
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/edit_resource_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
