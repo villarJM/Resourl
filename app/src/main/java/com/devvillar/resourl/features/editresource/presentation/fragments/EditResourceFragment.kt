@@ -1,16 +1,14 @@
-package com.devvillar.resourl.features.addresource.presentation.fragments
+package com.devvillar.resourl.features.editresource.presentation.fragments
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import com.devvillar.resourl.R
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.devvillar.resourl.databinding.FragmentEditResourceBinding
-import com.devvillar.resourl.features.addresource.presentation.models.ResourceData
-import com.devvillar.resourl.features.addresource.presentation.viewmodels.EditResourceViewModel
+import com.devvillar.resourl.shared.models.ResourceData
+import com.devvillar.resourl.features.editresource.presentation.viewmodels.EditResourceViewModel
 
 class EditResourceFragment : Fragment() {
 

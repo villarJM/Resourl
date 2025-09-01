@@ -12,8 +12,9 @@ import com.devvillar.resourl.R
 import com.devvillar.resourl.features.addresource.adapters.AddResourceAdapter
 import com.devvillar.resourl.features.addresource.adapters.OnResourceEditClickListener
 import com.devvillar.resourl.features.addresource.domain.ResourceItem
-import com.devvillar.resourl.features.addresource.presentation.models.ResourceData
+import com.devvillar.resourl.shared.models.ResourceData
 import com.devvillar.resourl.features.addresource.presentation.viewmodels.AddResourceViewModel
+import com.devvillar.resourl.features.editresource.presentation.fragments.EditResourceFragment
 
 class AddResourceFragment : Fragment(), OnResourceEditClickListener {
 

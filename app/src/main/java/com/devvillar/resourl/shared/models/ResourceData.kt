@@ -1,4 +1,4 @@
-package com.devvillar.resourl.features.addresource.presentation.models
+package com.devvillar.resourl.shared.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
