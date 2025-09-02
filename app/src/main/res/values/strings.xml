@@ -21,4 +21,9 @@
     <string name="edit_resource_hint_category">Add new or search category</string>
     <string name="edit_resource_hint_tags">Add new or search tags</string>
     <string name="edit_resource_update_button">Update Resource</string>
+
+    <!-- Search Resource Screen -->
+    <string name="search_resource_title">Search Resource</string>
+    <string name="search_resource_hint">Search resources…</string>
+
 </resources>
