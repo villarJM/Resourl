@@ -20,8 +20,8 @@
 
     <!-- Display Small - Para títulos secundarios grandes -->
     <style name="TextAppearance.App.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
-        <item name="fontFamily">@font/funnel_display_bold</item>
-        <item name="android:fontWeight">900</item>
+        <item name="fontFamily">@font/funnel_display_extrabold</item>
+        <item name="android:textSize">30sp</item>
     </style>
 
     <!-- Headline Large - Para títulos de sección principales -->

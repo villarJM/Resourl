@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.devvillar.resourl.features.addresource.presentation.fragments.AddResourceFragment
+import com.devvillar.resourl.features.auth.presentation.fragments.LoginFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,7 +16,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container_fragment, AddResourceFragment())
+                .replace(R.id.container_fragment, LoginFragment())
                 .commitNow()
         }
     }

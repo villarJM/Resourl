@@ -4,6 +4,7 @@
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorOnPrimary">@color/onPrimary</item>
+        <item name="colorOnPrimaryFixed">@color/onPrimaryFixed</item>
         <item name="colorPrimaryContainer">@color/primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/onPrimaryContainer</item>
         <item name="colorSecondary">@color/secondary</item>
@@ -16,6 +17,9 @@
         <item name="colorSurfaceContainerHigh">@color/surfaceContainerHigh</item>
         <item name="colorOutline">@color/outline</item>
         <item name="colorOutlineVariant">@color/outlineVariant</item>
+
+        <item name="rippleColor">@color/ripple</item>
+        <item name="android:textColorHint">@color/textHint</item>
 
         <!-- Material Design 3 Typography overrides -->
         <item name="textAppearanceDisplayLarge">@style/TextAppearance.App.DisplayLarge</item>

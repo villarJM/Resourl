@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">Resourl</string>
 
+    <!-- Login Screen -->
+    <string name="login_title_hero_1">Hi there!</string>
+    <string name="login_title_hero_2">Welcome back</string>
+    <string name="login_hint_email">Email</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_forgot_password_button">Forgot your password?</string>
+    <string name="login_login_button">Login</string>
+    <string name="login_register_button">Create a new account</string>
+
     <!-- Add Resource Screen -->
     <string name="add_resource_title">Add Resource</string>
     <string name="add_resource_header_recent">Recent Resource</string>
