@@ -11,7 +11,7 @@
     <color name="onPrimaryContainer">#FF753793</color>
     <color name="secondary">#FF6B5B95</color>
     <color name="onSecondary">#FFFFFFFF</color>
-    <color name="secondaryContainer">#FFFDF0F0</color>
+    <color name="secondaryContainer">#FFC1BBDD</color>
     <color name="onSecondaryContainer">#FF6B5B95</color>
     <color name="tertiary">#FFFD006D</color>
     <color name="surface">#FFF3F1F8</color>

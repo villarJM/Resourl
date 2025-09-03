@@ -10,6 +10,14 @@
     <string name="login_login_button">Login</string>
     <string name="login_register_button">Create a new account</string>
 
+    <!-- Register Screen -->
+    <string name="register_title_hero_1">Hi there!</string>
+    <string name="register_title_hero_2">Welcome! Let’s get started.</string>
+    <string name="register_hint_email">Email</string>
+    <string name="register_hint_password">Password</string>
+    <string name="register_hint_confirm_password">Confirm Password</string>
+    <string name="register_register_button">Register</string>
+
     <!-- Add Resource Screen -->
     <string name="add_resource_title">Add Resource</string>
     <string name="add_resource_header_recent">Recent Resource</string>
