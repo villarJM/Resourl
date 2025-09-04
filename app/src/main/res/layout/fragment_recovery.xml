@@ -41,8 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceDisplaySmall"
-                android:lineSpacingMultiplier="1"
-                android:text="@string/recovery_title_hero_2"/>
+                android:text="@string/recovery_title_hero_2"
+                app:lineHeight="38sp" />
 
         </LinearLayout>
 
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:hint="@string/recovery_hint_email"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionDone"
                 android:inputType="textEmailAddress"/>
 
         </com.google.android.material.textfield.TextInputLayout>

@@ -48,7 +48,7 @@ class EditResourceFragment : Fragment() {
     private fun setupUI() {
         prefillForm()
 
-        binding.editToolBar.setNavigationOnClickListener {
+        binding.backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
     }

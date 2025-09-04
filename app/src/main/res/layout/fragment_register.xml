@@ -43,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceDisplaySmall"
                 android:lineSpacingMultiplier="1"
-                android:text="@string/register_title_hero_2"/>
+                android:text="@string/register_title_hero_2"
+                app:lineHeight="38sp" />
 
         </LinearLayout>
 
