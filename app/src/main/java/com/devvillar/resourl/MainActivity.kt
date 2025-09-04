@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.devvillar.resourl.features.addresource.presentation.fragments.AddResourceFragment
 import com.devvillar.resourl.features.auth.presentation.fragments.LoginFragment
+import com.devvillar.resourl.features.auth.presentation.fragments.RecoveryFragment
 import com.devvillar.resourl.features.auth.presentation.fragments.RegisterFragment
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container_fragment, RegisterFragment())
+                .replace(R.id.container_fragment, RecoveryFragment())
                 .commitNow()
         }
     }

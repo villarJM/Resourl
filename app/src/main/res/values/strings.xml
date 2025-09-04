@@ -18,6 +18,12 @@
     <string name="register_hint_confirm_password">Confirm Password</string>
     <string name="register_register_button">Register</string>
 
+    <!-- Recovery Screen -->
+    <string name="recovery_title_hero_1">Forgot your password?</string>
+    <string name="recovery_title_hero_2">Don’t worry, We’ll help you recover it.</string>
+    <string name="recovery_hint_email">Email</string>
+    <string name="recovery_recovery_button">Send Recovery Email</string>
+
     <!-- Add Resource Screen -->
     <string name="add_resource_title">Add Resource</string>
     <string name="add_resource_header_recent">Recent Resource</string>
