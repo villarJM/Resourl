@@ -43,10 +43,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="Resource Name"
+                    android:text="@string/ph_resource_name"
                     android:textColor="?attr/colorPrimary"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                 <TextView
                     android:id="@+id/resource_url"
@@ -55,7 +54,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:gravity="center_vertical"
-                    android:text="https://www.example.com"
+                    android:text="@string/ph_resource_url"
                     android:textColor="?attr/colorOnPrimaryContainer"
                     android:textAppearance="?attr/textAppearanceBodyMedium" />
 
@@ -64,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="09, January 2024"
+                    android:text="@string/ph_resource_date"
                     android:textColor="?attr/colorPrimary"
                     android:textAppearance="?attr/textAppearanceBodyMedium" />
 
@@ -91,14 +90,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:textColor="?attr/colorOnPrimaryContainer"
-            android:text="Category"/>
+            android:text="@string/ph_resource_category"/>
 
         <TextView
             android:id="@+id/resource_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Design tool for creating user interfaces and prototypes."/>
+            android:text="@string/ph_resource_description"/>
 
         <!-- ChipGroup para tags dinámicos -->
         <com.google.android.material.chip.ChipGroup

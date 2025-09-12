@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Resourl</string>
 
+    <!-- Placeholder -->
+    <string name="ph_resource_name">Resource Name</string>
+    <string name="ph_resource_url">https://www.resourl.com</string>
+    <string name="ph_resource_date">09, January 2024</string>
+    <string name="ph_resource_category">Category</string>
+    <string name="ph_resource_description">Brief description of what you use this resource for…</string>
+
     <!-- Login Screen -->
     <string name="login_title_hero_1">Hi there!</string>
     <string name="login_title_hero_2">Welcome back</string>
