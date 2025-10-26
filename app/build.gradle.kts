@@ -1,3 +1,5 @@
+import io.github.klahap.dotenv.DotEnvBuilder
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -23,7 +25,23 @@ android {
     }
 
     buildTypes {
+        debug {
+            val env = DotEnvBuilder.dotEnv {
+                addFile("$rootDir/.env.dev")
+                addSystemEnv()
+            }
+            isDebuggable = true
+            buildConfigField("String", "BASE_URL", "\"${env["BASE_URL"]}\"")
+            buildConfigField("boolean", "IS_PRODUCTION", "${env["DEBUG_MODE"]}")
+        }
         release {
+            val env = DotEnvBuilder.dotEnv {
+                addFile("$rootDir/.env.prod")
+                addSystemEnv()
+            }
+            isDebuggable = false
+            buildConfigField("String", "BASE_URL", "\"${env["BASE_URL"]}\"")
+            buildConfigField("boolean", "IS_PRODUCTION", "${env["DEBUG_MODE"]}")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -34,6 +52,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     compileOptions {
