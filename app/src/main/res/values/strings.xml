@@ -9,8 +9,7 @@
     <string name="ph_resource_description">Brief description of what you use this resource for…</string>
 
     <!-- Login Screen -->
-    <string name="login_title_hero_1">Hi there!</string>
-    <string name="login_title_hero_2">Welcome back</string>
+    <string name="login_title_hero_1">Hi there! \nWelcome back</string>
     <string name="login_hint_email">Email</string>
     <string name="login_hint_password">Password</string>
     <string name="login_forgot_password_button">Forgot your password?</string>

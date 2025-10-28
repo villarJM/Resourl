@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="OutlinedChip" parent="Widget.Material3.Chip.Suggestion">
-        <item name="chipBackgroundColor">@color/white</item>
-        <item name="chipStrokeColor">?attr/colorOutlineVariant</item>
-        <item name="chipStrokeWidth">1dp</item>
-        <item name="chipCornerRadius">20dp</item>
-    </style>
-</resources>

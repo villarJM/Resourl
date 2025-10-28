@@ -1,20 +1,24 @@
 package com.devvillar.resourl
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import com.devvillar.resourl.features.auth.presentation.fragments.LoginFragment
+import com.devvillar.resourl.core.ui.navegation.ResourlNavigation
+import com.devvillar.resourl.core.ui.theme.ResourlTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container_fragment, LoginFragment())
-                .commitNow()
+        setContent {
+            ResourlTheme(
+                darkTheme = false
+            ) {
+                ResourlNavigation()
+            }
         }
     }
 }
