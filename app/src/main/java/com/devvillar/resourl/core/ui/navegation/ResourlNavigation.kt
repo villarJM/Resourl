@@ -16,7 +16,11 @@ fun ResourlNavigation() {
         startDestination = Screen.Login.route
     ) {
         composable(Screen.Login.route) {
-            LoginScreen()
+            LoginScreen(
+                onNavigateTo = {
+
+                }
+            )
         }
 
     }
@@ -24,4 +28,5 @@ fun ResourlNavigation() {
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")
+    object Home : Screen("home")
 }

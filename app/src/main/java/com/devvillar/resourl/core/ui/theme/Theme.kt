@@ -38,6 +38,7 @@ private val DarkColorScheme = darkColorScheme(
 private val LightColorScheme = lightColorScheme(
     primary = Primary,
     onPrimary = OnPrimary,
+    onPrimaryFixed = OnPrimaryFixed,
     primaryContainer = PrimaryContainer,
     onPrimaryContainer = OnPrimaryContainer,
 
