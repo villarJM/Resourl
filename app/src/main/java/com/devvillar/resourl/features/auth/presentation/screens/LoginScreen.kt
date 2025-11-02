@@ -39,6 +39,7 @@ import com.devvillar.resourl.core.ui.components.StaggeredDotsWave
 import com.devvillar.resourl.core.utils.ValidationFormField.FIELD_EMAIL
 import com.devvillar.resourl.core.utils.ValidationFormField.FIELD_PASSWORD
 import com.devvillar.resourl.features.auth.presentation.viewmodels.LoginViewModel
+import androidx.compose.runtime.collectAsState
 
 
 @Composable
@@ -54,6 +55,8 @@ fun LoginScreen(
 
     val email by viewModel.email.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+
+    val isFormValid by viewModel.isFormValid.collectAsState()
 
     LaunchedEffect(loginState) {
         when (loginState) {
@@ -117,7 +120,7 @@ fun LoginScreen(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Done
-                    ),
+                    ),  
                     isPassword = true,
                     isError = validationState.getError(FIELD_PASSWORD) != null,
                     supportingText = {
@@ -145,6 +148,7 @@ fun LoginScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp),
+                    enabled = isFormValid && loginState !is UIState.Loading
                 ) {
 
                     if (loginState is UIState.Loading) {

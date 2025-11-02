@@ -51,44 +51,26 @@ fun RegisterScreen(
     viewModel: RegisterViewModel = hiltViewModel(),
     onNavigateToLogin: () -> Unit = {},
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
 
     val registerState by viewModel.registerUIState.collectAsStateWithLifecycle()
     val validationState by viewModel.validationResult.collectAsStateWithLifecycle()
 
-    RegisterScreenContent(
-        registerState = registerState,
-        validationState = validationState,
-        onNavigateToLogin = onNavigateToLogin,
-        clearValidationResults = { viewModel.clearValidationResults() },
-        register = { firstName: String, lastName: String, email: String, password: String, confirmPassword: String ->
-            viewModel.register(firstName, lastName, email, password, confirmPassword)
-        }
-    )
 
-}
+    val firstName by viewModel.firstName.collectAsStateWithLifecycle()
+    val lastName by viewModel.lastName.collectAsStateWithLifecycle()
+    val email by viewModel.email.collectAsStateWithLifecycle()
+    val password by viewModel.password.collectAsStateWithLifecycle()
+    val confirmPassword by viewModel.confirmPassword.collectAsStateWithLifecycle()
 
-@Composable
-fun RegisterScreenContent(
-    registerState: UIState<ApiResponse<Nothing>>,
-    validationState: ValidationResult,
-    onNavigateToLogin: () -> Unit = {},
-    clearValidationResults: () -> Unit = {},
-    register: (String, String, String, String, String) -> Unit = { firstName: String, lastName: String, email: String, password: String, confirmPassword: String -> }
-) {
-    val snackBarHostState = remember { SnackbarHostState() }
-
-    var name by rememberSaveable { mutableStateOf("") }
-    var lastName by rememberSaveable { mutableStateOf("") }
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-    var confirmPassword by rememberSaveable { mutableStateOf("") }
+    val isFormValid by viewModel.isFormValid.collectAsStateWithLifecycle()
 
 
     LaunchedEffect(registerState) {
         when (registerState) {
             is UIState.Success -> onNavigateToLogin()
             is UIState.Error -> {
-                snackBarHostState.showSnackbar(registerState.message)
+                snackBarHostState.showSnackbar((registerState as UIState.Error).message)
             }
             else -> {}
         }
@@ -124,11 +106,8 @@ fun RegisterScreenContent(
                 Spacer(modifier = Modifier.height(30.dp))
 
                 CustomOutlinedTextField(
-                    value = name,
-                    onValueChange = {
-                        name = it
-                        clearValidationResults()
-                    },
+                    value = firstName,
+                    onValueChange = { viewModel.onFirstNameChanged(it ) },
                     placeholderText = stringResource(R.string.register_hint_name),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
@@ -146,10 +125,7 @@ fun RegisterScreenContent(
 
                 CustomOutlinedTextField(
                     value = lastName,
-                    onValueChange = {
-                        lastName = it
-                        clearValidationResults()
-                    },
+                    onValueChange = { viewModel.onLastNameChanged(it) },
                     placeholderText = stringResource(R.string.register_hint_lastname),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
@@ -167,10 +143,7 @@ fun RegisterScreenContent(
 
                 CustomOutlinedTextField(
                     value = email,
-                    onValueChange = {
-                        email = it
-                        clearValidationResults()
-                    },
+                    onValueChange = { viewModel.onEmailChanged(it) },
                     placeholderText = stringResource(R.string.register_hint_email),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
@@ -188,10 +161,7 @@ fun RegisterScreenContent(
 
                 CustomOutlinedTextField(
                     value = password,
-                    onValueChange = {
-                        password = it
-                        clearValidationResults()
-                    },
+                    onValueChange = { viewModel.onPasswordChanged(it) },
                     placeholderText = stringResource(R.string.register_hint_password),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password,
@@ -210,10 +180,7 @@ fun RegisterScreenContent(
 
                 CustomOutlinedTextField(
                     value = confirmPassword,
-                    onValueChange = {
-                        confirmPassword = it
-                        clearValidationResults()
-                    },
+                    onValueChange = { viewModel.onConfirmPasswordChanged(it) },
                     placeholderText = stringResource(R.string.register_hint_confirm_password),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password,
@@ -231,7 +198,8 @@ fun RegisterScreenContent(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = { register(name, lastName, email, password, confirmPassword) },
+                    onClick = { viewModel.register() },
+                    enabled = isFormValid && registerState !is UIState.Loading,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp),
@@ -260,8 +228,5 @@ fun RegisterScreenContent(
 @Composable
 @Preview(showBackground = true)
 fun RegisterScreenPreview() {
-    RegisterScreenContent(
-        registerState = UIState.Initial,
-        validationState = ValidationResult(),
-    )
+    RegisterScreen()
 }
