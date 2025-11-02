@@ -2,7 +2,9 @@ package com.devvillar.resourl.core.utils
 
 import android.content.Context
 import android.util.Patterns
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.devvillar.resourl.core.utils.ValidationFormField.FIELD_CONFIRM_PASSWORD
+import com.devvillar.resourl.core.utils.ValidationFormField.FIELD_EMAIL
+import com.devvillar.resourl.core.utils.ValidationFormField.FIELD_PASSWORD
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,7 +14,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class ValidationUtils @Inject constructor(
-    @param:ApplicationContext private val context: Context
+    private val validationErrorMessages: ValidationErrorMessages
 ) {
 
     // Constants for better maintainability
@@ -20,54 +22,15 @@ class ValidationUtils @Inject constructor(
         const val MIN_PASSWORD_LENGTH = 8
         val SPECIAL_CHARACTERS = setOf('!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '-', '=', '[', ']', '{', '}', '|', ';', ':', ',', '.', '<', '>', '?')
 
-        const val FIELD_EMAIL = "email"
-        const val FIELD_PASSWORD = "password"
-        const val FIELD_CONFIRM_PASSWORD = "confirmPassword"
-    }
-
-    // Error messages using string resources - Context already available
-    private val emailEmptyError: String = "Email cannot be empty"
-    private val emailInvalidError: String = "Invalid email format"
-    private val passwordEmptyError: String = "Password cannot be empty"
-    private val passwordInvalidError: String = "Password must be at least $MIN_PASSWORD_LENGTH characters long and include uppercase, lowercase, digit, and special character"
-    private val confirmPasswordEmptyError: String = "Confirm Password cannot be empty"
-    private val confirmPasswordMismatchError: String = "Passwords do not match"
-
-    /**
-     * Validates both email and password and returns all errors found
-     * Shows both errors when both fields are invalid
-     */
-    fun validateFieldLogins(email: String?, password: String?): ValidationResult {
-        val errors = mutableMapOf<String, String>()
-        // Validate both fields to get all errors
-        validateEmail(email)?.let { errors[FIELD_EMAIL] = it }
-        validatePassword(password)?.let { errors[FIELD_PASSWORD] = it }
-
-        // Return all errors found, not just the first one
-        return ValidationResult(errors)
-    }
-
-    /**
-     * Validates email, password, and confirm password for registration
-     * Ensures all fields are checked and returns all errors found
-     */
-    fun validateFieldRegistrations(email: String?, password: String?, confirmPassword: String?): ValidationResult {
-        val errors = mutableMapOf<String, String>()
-        // Validate email and password to get all errors
-        validateEmail(email)?.let { errors[FIELD_EMAIL] = it }
-        validatePassword(password)?.let { errors[FIELD_PASSWORD] = it }
-        validateConfirmPassword(password, confirmPassword)?.let { errors[FIELD_CONFIRM_PASSWORD] = it }
-        // Return all errors found
-        return ValidationResult(errors)
     }
 
     /**
      * Validates email format
      * @return error message or null if valid
      */
-    fun validateEmail(email: String?): String? = when {
-        email.isNullOrBlank() -> emailEmptyError
-        !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> emailInvalidError
+    fun validateFieldEmail(email: String?): String? = when {
+        email.isNullOrBlank() -> validationErrorMessages.emailEmptyError
+        !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> validationErrorMessages.emailInvalidError
         else -> null
     }
 
@@ -75,9 +38,9 @@ class ValidationUtils @Inject constructor(
      * Validates password strength
      * @return error message or null if valid
      */
-    fun validatePassword(password: String?): String? = when {
-        password.isNullOrBlank() -> passwordEmptyError
-        !isValidPassword(password) -> passwordInvalidError
+    fun validateFieldPassword(password: String?): String? = when {
+        password.isNullOrBlank() -> validationErrorMessages.passwordEmptyError
+        !isValidPassword(password) -> validationErrorMessages.passwordInvalidError
         else -> null
     }
 
@@ -85,9 +48,9 @@ class ValidationUtils @Inject constructor(
      * Validates that confirm password matches the original password
      * @return error message or null if valid
      */
-    private fun validateConfirmPassword(password: String?, confirmPassword: String?): String? = when {
-        confirmPassword.isNullOrBlank() -> confirmPasswordEmptyError
-        password != confirmPassword -> confirmPasswordMismatchError
+    fun validateFieldConfirmPassword(password: String?, confirmPassword: String?): String? = when {
+        confirmPassword.isNullOrBlank() -> validationErrorMessages.confirmPasswordEmptyError
+        password != confirmPassword -> validationErrorMessages.confirmPasswordMismatchError
         else -> null
     }
 
@@ -116,5 +79,17 @@ class ValidationUtils @Inject constructor(
         }
 
         return false
+    }
+
+    fun validateFieldFirstName(firstName: String?): String? = when {
+        firstName.isNullOrBlank() -> validationErrorMessages.firstNameEmptyError
+        firstName != firstName.trim() -> validationErrorMessages.firstNameWhitespaceError
+        else -> null
+    }
+
+    fun validateFieldLastName(lastName: String?): String? = when {
+        lastName.isNullOrBlank() -> validationErrorMessages.lastNameEmptyError
+        lastName != lastName.trim() -> validationErrorMessages.lastNameWhitespaceError
+        else -> null
     }
 }

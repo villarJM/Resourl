@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.devvillar.resourl.features.auth.presentation.screens.LoginScreen
+import com.devvillar.resourl.features.auth.presentation.screens.RegisterScreen
 
 @Composable
 fun ResourlNavigation() {
@@ -17,7 +18,15 @@ fun ResourlNavigation() {
     ) {
         composable(Screen.Login.route) {
             LoginScreen(
-                onNavigateTo = {
+                onNavigateToRegister = {
+                    navController.navigate(Screen.Register.route)
+                }
+            )
+        }
+
+        composable(Screen.Register.route) {
+            RegisterScreen(
+                onNavigateToLogin = {
 
                 }
             )
@@ -28,5 +37,6 @@ fun ResourlNavigation() {
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")
+    object Register : Screen("register")
     object Home : Screen("home")
 }

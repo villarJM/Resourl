@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -19,9 +21,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,26 +36,28 @@ import com.devvillar.resourl.R
 import com.devvillar.resourl.core.state.UIState
 import com.devvillar.resourl.core.ui.components.CustomOutlinedTextField
 import com.devvillar.resourl.core.ui.components.StaggeredDotsWave
-import com.devvillar.resourl.core.utils.ValidationUtils
+import com.devvillar.resourl.core.utils.ValidationFormField.FIELD_EMAIL
+import com.devvillar.resourl.core.utils.ValidationFormField.FIELD_PASSWORD
 import com.devvillar.resourl.features.auth.presentation.viewmodels.LoginViewModel
+
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
-    onNavigateTo: () -> Unit = {},
+    onNavigateToRegister: () -> Unit = {},
+    onNavigateToForgotPassword: () -> Unit = {},
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
 
     val loginState by viewModel.loginUIState.collectAsStateWithLifecycle()
     val validationState by viewModel.validationResult.collectAsStateWithLifecycle()
-    val snackBarHostState = remember { SnackbarHostState() }
 
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
+    val email by viewModel.email.collectAsStateWithLifecycle()
+    val password by viewModel.password.collectAsStateWithLifecycle()
 
     LaunchedEffect(loginState) {
         when (loginState) {
-            is UIState.Success -> onNavigateTo()
+            is UIState.Success -> {}
             is UIState.Error -> {
                 snackBarHostState.showSnackbar((loginState as UIState.Error).message)
             }
@@ -77,8 +79,10 @@ fun LoginScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 56.dp, start = 20.dp, end = 20.dp),
+                    .padding(start = 20.dp, end = 20.dp)
+                    .verticalScroll(rememberScrollState()),
             ) {
+                Spacer(modifier = Modifier.height(56.dp))
                 Text(
                     stringResource(R.string.login_title_hero_1),
                     fontSize = 38.sp,
@@ -90,18 +94,15 @@ fun LoginScreen(
 
                 CustomOutlinedTextField(
                     value = email,
-                    onValueChange = {
-                        email = it
-                        viewModel.clearValidationResults()
-                    },
+                    onValueChange = { viewModel.onEmailChange(it) },
                     placeholderText = stringResource(R.string.login_hint_email),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
                     ),
-                    isError = validationState.getError(ValidationUtils.FIELD_EMAIL) != null,
+                    isError = validationState.getError(FIELD_EMAIL) != null,
                     supportingText = {
-                        validationState.getError(ValidationUtils.FIELD_EMAIL)?.let {
+                        validationState.getError(FIELD_EMAIL)?.let {
                             Text(it, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
                         }
                     },
@@ -111,19 +112,16 @@ fun LoginScreen(
 
                 CustomOutlinedTextField(
                     value = password,
-                    onValueChange = {
-                        password = it
-                        viewModel.clearValidationResults()
-                    },
+                    onValueChange = { viewModel.onPasswordChange(it) },
                     placeholderText = stringResource(R.string.login_hint_password),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Done
                     ),
                     isPassword = true,
-                    isError = validationState.getError(ValidationUtils.FIELD_PASSWORD) != null,
+                    isError = validationState.getError(FIELD_PASSWORD) != null,
                     supportingText = {
-                        validationState.getError(ValidationUtils.FIELD_PASSWORD)?.let {
+                        validationState.getError(FIELD_PASSWORD)?.let {
                             Text(it, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
                         }
                     },
@@ -132,7 +130,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 TextButton(
-                    onClick = { /* TODO: Handle forgot password action */ }
+                    onClick = { onNavigateToForgotPassword() }
                 ) {
                     Text(
                         stringResource(R.string.login_forgot_password_button),
@@ -143,7 +141,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = { viewModel.login(email, password) },
+                    onClick = { viewModel.login() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp),
@@ -166,7 +164,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(30.dp))
 
                 OutlinedButton(
-                    onClick = { /* TODO: Handle sign up action */ },
+                    onClick = { onNavigateToRegister() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp),
@@ -176,6 +174,8 @@ fun LoginScreen(
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
+
+                Spacer(modifier = Modifier.height(30.dp))
             }
         }
     }
@@ -184,5 +184,8 @@ fun LoginScreen(
 @Composable
 @Preview(showBackground = true)
 fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen(
+        onNavigateToRegister = {},
+        onNavigateToForgotPassword = {}
+    )
 }
