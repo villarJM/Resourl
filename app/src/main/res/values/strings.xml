@@ -42,10 +42,12 @@
     <string name="register_confirm_password_mismatch_error">Passwords do not match</string>
 
     <!-- Recovery Screen -->
-    <string name="recovery_title_hero_1">Forgot your password?</string>
-    <string name="recovery_title_hero_2">Don’t worry, We’ll help you recover it.</string>
+    <string name="recovery_title_hero">Forgot your password?\nDon’t worry, We’ll help you recover it.</string>
     <string name="recovery_hint_email">Email</string>
-    <string name="recovery_recovery_button">Send Recovery Email</string>
+    <string name="recovery_recovery_button">Recovery</string>
+
+    <string name="recovery_email_empty_error">The email can\'t be empty</string>
+    <string name="recovery_email_invalid_error">Invalid email format</string>
 
     <!-- Add Resource Screen -->
     <string name="add_resource_title">Add Resource</string>

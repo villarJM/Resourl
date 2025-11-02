@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.devvillar.resourl.features.auth.presentation.screens.ForgotPasswordScreen
 import com.devvillar.resourl.features.auth.presentation.screens.LoginScreen
 import com.devvillar.resourl.features.auth.presentation.screens.RegisterScreen
 
@@ -20,6 +21,9 @@ fun ResourlNavigation() {
             LoginScreen(
                 onNavigateToRegister = {
                     navController.navigate(Screen.Register.route)
+                },
+                onNavigateToForgotPassword = {
+                    navController.navigate(Screen.ForgotPassword.route)
                 }
             )
         }
@@ -32,11 +36,20 @@ fun ResourlNavigation() {
             )
         }
 
+        composable(Screen.ForgotPassword.route) {
+            ForgotPasswordScreen(
+                onNavigateToLogin = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
     }
 }
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")
     object Register : Screen("register")
+    object ForgotPassword : Screen("forgot_password")
     object Home : Screen("home")
 }
