@@ -27,7 +27,7 @@ fun ResourlNavigation() {
         composable(Screen.Register.route) {
             RegisterScreen(
                 onNavigateToLogin = {
-
+                    navController.popBackStack()
                 }
             )
         }
