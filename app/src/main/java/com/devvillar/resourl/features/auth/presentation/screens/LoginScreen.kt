@@ -85,12 +85,11 @@ fun LoginScreen(
                     .padding(start = 20.dp, end = 20.dp)
                     .verticalScroll(rememberScrollState()),
             ) {
-                Spacer(modifier = Modifier.height(56.dp))
+                Spacer(modifier = Modifier.height(30.dp))
+
                 Text(
                     stringResource(R.string.login_title_hero_1),
-                    fontSize = 38.sp,
-                    lineHeight = 42.sp,
-                    fontWeight = FontWeight.ExtraBold,
+                    style = MaterialTheme.typography.headlineLarge
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))

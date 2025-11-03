@@ -101,9 +101,7 @@ fun ForgotPasswordScreen(
 
                 Text(
                     stringResource(R.string.recovery_title_hero),
-                    fontSize = 38.sp,
-                    lineHeight = 42.sp,
-                    fontWeight = FontWeight.ExtraBold,
+                    style = MaterialTheme.typography.headlineLarge
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))

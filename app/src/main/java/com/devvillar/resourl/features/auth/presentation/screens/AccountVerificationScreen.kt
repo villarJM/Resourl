@@ -91,9 +91,7 @@ fun AccountVerificationScreen(
 
                 Text(
                     "Account Verification",
-                    fontSize = 38.sp,
-                    lineHeight = 42.sp,
-                    fontWeight = FontWeight.ExtraBold,
+                    style = MaterialTheme.typography.headlineLarge
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))

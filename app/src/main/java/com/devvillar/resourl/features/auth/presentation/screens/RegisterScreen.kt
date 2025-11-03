@@ -110,9 +110,7 @@ fun RegisterScreen(
 
                 Text(
                     stringResource(R.string.register_title_hero),
-                    fontSize = 38.sp,
-                    lineHeight = 42.sp,
-                    fontWeight = FontWeight.ExtraBold,
+                    style = MaterialTheme.typography.headlineLarge
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))
