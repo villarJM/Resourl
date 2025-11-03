@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -22,50 +21,41 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.devvillar.resourl.R
-import com.devvillar.resourl.core.state.UIState
-import com.devvillar.resourl.core.ui.components.CustomOutlinedTextField
-import com.devvillar.resourl.core.ui.components.StaggeredDotsWave
-import com.devvillar.resourl.core.utils.ValidationFormField.FIELD_EMAIL
-import com.devvillar.resourl.features.auth.presentation.viewmodels.ForgotPasswordViewModel
+import com.devvillar.resourl.core.ui.components.OtpTextField
 
 @Composable
-fun ForgotPasswordScreen(
-    viewModel: ForgotPasswordViewModel = hiltViewModel(),
-    onNavigateToAccountVerification: () -> Unit = {},
-    onNavigateToLogin: () -> Unit = {}
+fun AccountVerificationScreen(
+    onNavigateToLogin: () -> Unit = {},
+    onNavigateToResetPassword: () -> Unit = {}
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
+    var otpCode by remember { mutableStateOf("") }
 
-    val forgotPasswordState by viewModel.forgotPasswordUIState.collectAsStateWithLifecycle()
-    val validationState by viewModel.validationResult.collectAsStateWithLifecycle()
+//    val forgotPasswordState by viewModel.forgotPasswordUIState.collectAsStateWithLifecycle()
+//    val validationState by viewModel.validationResult.collectAsStateWithLifecycle()
+//
+//    val email by viewModel.email.collectAsStateWithLifecycle()
+//
+//    val isFormValid = viewModel.isFormValid.collectAsStateWithLifecycle()
 
-    val email by viewModel.email.collectAsStateWithLifecycle()
-
-    val isFormValid = viewModel.isFormValid.collectAsStateWithLifecycle()
-
-    LaunchedEffect(forgotPasswordState) {
-        when (forgotPasswordState) {
-            is UIState.Success -> onNavigateToAccountVerification()
-            is UIState.Error -> {
-                snackBarHostState.showSnackbar((forgotPasswordState as UIState.Error).message)
-            }
-            else -> {}
-        }
-    }
+//    LaunchedEffect(forgotPasswordState) {
+//        when (forgotPasswordState) {
+//            is UIState.Success -> onNavigateToLogin()
+//            is UIState.Error -> {
+//                snackBarHostState.showSnackbar((forgotPasswordState as UIState.Error).message)
+//            }
+//            else -> {}
+//        }
+//    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -89,7 +79,7 @@ fun ForgotPasswordScreen(
                 FilledTonalIconButton(
                     modifier = Modifier
                         .size(50.dp),
-                    onClick = { onNavigateToLogin() }
+                    onClick = { onNavigateToResetPassword()  }
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -100,51 +90,52 @@ fun ForgotPasswordScreen(
                 Spacer(modifier = Modifier.height(30.dp))
 
                 Text(
-                    stringResource(R.string.recovery_title_hero),
+                    "Account Verification",
                     fontSize = 38.sp,
                     lineHeight = 42.sp,
                     fontWeight = FontWeight.ExtraBold,
                 )
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
-                CustomOutlinedTextField(
-                    value = email,
-                    onValueChange = { viewModel.onEmailChange(it) },
-                    placeholderText = stringResource(R.string.recovery_hint_email),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Next
-                    ),
-                    isError = validationState.getError(FIELD_EMAIL) != null,
-                    supportingText = {
-                        validationState.getError(FIELD_EMAIL)?.let {
-                            Text(it, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
-                        }
-                    },
+                Text(
+                    "Enter the 6-digit code sent to your email address",
+                    fontSize = 16.sp,
+                    lineHeight = 22.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Spacer(modifier = Modifier.height(40.dp))
+
+                OtpTextField(
+                    value = otpCode,
+                    onValueChange = { otpCode = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    otpLength = 6,
+//                    isError = validationState.getError(FIELD_OTP) != null
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = { onNavigateToAccountVerification() },
+                    onClick = {  },
 //                    enabled = isFormValid.value && forgotPasswordState !is UIState.Loading,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp),
                 ) {
 
-                    if (forgotPasswordState is UIState.Loading) {
-                        StaggeredDotsWave(
-                            dotColor = MaterialTheme.colorScheme.onPrimaryFixed,
-                            delayBetweenDots = 300
-                        )
-                    } else {
+//                    if (forgotPasswordState is UIState.Loading) {
+//                        StaggeredDotsWave(
+//                            dotColor = MaterialTheme.colorScheme.onPrimaryFixed,
+//                            delayBetweenDots = 300
+//                        )
+//                    } else {
                         Text(
-                            stringResource(R.string.recovery_recovery_button),
+                            "Verificar Código",
                             color = MaterialTheme.colorScheme.onPrimaryFixed
                         )
-                    }
+//                    }
 
                 }
 
@@ -156,6 +147,6 @@ fun ForgotPasswordScreen(
 
 @Composable
 @Preview(showBackground = true)
-fun ForgotPasswordScreenPreview() {
-    ForgotPasswordScreen()
+fun AccountVerificationScreenPreview() {
+    AccountVerificationScreen()
 }
