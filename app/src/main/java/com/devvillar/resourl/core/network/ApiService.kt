@@ -2,6 +2,7 @@ package com.devvillar.resourl.core.network
 
 import com.devvillar.resourl.features.auth.data.datasources.remote.dto.UserSessionDto
 import com.devvillar.resourl.features.auth.data.datasources.remote.request.LoginRequest
+import com.devvillar.resourl.features.auth.data.datasources.remote.request.RegisterRequest
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -11,7 +12,7 @@ interface ApiService {
     suspend fun login(@Body request: LoginRequest): ApiResponse<UserSessionDto>
 
     @POST("auth/register")
-    suspend fun register()
+    suspend fun register(@Body request: RegisterRequest): ApiResponse<Nothing>
 
     @POST("auth/logout")
     suspend fun logout()
@@ -20,7 +21,7 @@ interface ApiService {
     suspend fun refreshToken()
 
     @POST("auth/forgot-password")
-    suspend fun forgotPassword()
+    suspend fun forgotPassword(@Body email: String): ApiResponse<Nothing>
 
     @POST("auth/reset-password")
     suspend fun resetPassword()

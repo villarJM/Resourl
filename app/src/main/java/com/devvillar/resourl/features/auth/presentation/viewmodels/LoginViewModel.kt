@@ -6,6 +6,7 @@ import com.devvillar.resourl.core.state.UIState
 import com.devvillar.resourl.core.utils.PrefsManager
 import com.devvillar.resourl.core.utils.ValidationAuth
 import com.devvillar.resourl.core.utils.ValidationResult
+import com.devvillar.resourl.features.auth.data.datasources.remote.request.LoginRequest
 import com.devvillar.resourl.features.auth.domain.models.UserSession
 import com.devvillar.resourl.features.auth.domain.usecases.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,15 +38,18 @@ class LoginViewModel @Inject constructor(
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
+
     val isFormValid: StateFlow<Boolean> = combine(_email, _password) { email, password ->
         validationAuth.validateFieldLogins(email, password).isValid
     }.stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     fun onEmailChange(newEmail: String) {
+        clearValidationResults()
         _email.value = newEmail
     }
 
     fun onPasswordChange(newPassword: String) {
+        clearValidationResults()
         _password.value = newPassword
     }
 
@@ -57,11 +61,16 @@ class LoginViewModel @Inject constructor(
             return
         }
 
+        val loginRequest = LoginRequest(
+            email = _email.value,
+            password = _password.value
+        )
+
         viewModelScope.launch {
 
             _loginUIState.value = UIState.Loading
 
-            val result = loginUseCase(_email.value, _password.value)
+            val result = loginUseCase(loginRequest)
             result.fold(
                 onSuccess = { userSession ->
                     prefsManager.saveTokens(userSession.accessToken, userSession.refreshToken)

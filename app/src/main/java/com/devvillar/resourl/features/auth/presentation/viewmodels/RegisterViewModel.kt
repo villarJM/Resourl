@@ -6,17 +6,22 @@ import com.devvillar.resourl.core.network.ApiResponse
 import com.devvillar.resourl.core.state.UIState
 import com.devvillar.resourl.core.utils.ValidationAuth
 import com.devvillar.resourl.core.utils.ValidationResult
+import com.devvillar.resourl.features.auth.data.datasources.remote.request.RegisterRequest
+import com.devvillar.resourl.features.auth.domain.usecases.RegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
+    private val registerUseCase: RegisterUseCase,
     private val validationAuth: ValidationAuth
 ) : BaseViewModel() {
 
@@ -42,22 +47,27 @@ class RegisterViewModel @Inject constructor(
     val confirmPassword: StateFlow<String> = _confirmPassword.asStateFlow()
 
     fun onFirstNameChanged(firstName: String) {
+        clearValidationResults()
         _firstName.value = firstName
     }
 
     fun onLastNameChanged(lastName: String) {
+        clearValidationResults()
         _lastName.value = lastName
     }
 
     fun onEmailChanged(email: String) {
+        clearValidationResults()
         _email.value = email
     }
 
     fun onPasswordChanged(password: String) {
+        clearValidationResults()
         _password.value = password
     }
 
     fun onConfirmPasswordChanged(confirmPassword: String) {
+        clearValidationResults()
         _confirmPassword.value = confirmPassword
     }
 
@@ -73,7 +83,26 @@ class RegisterViewModel @Inject constructor(
             return
         }
 
-        // Registration logic would go here, similar to the login function in LoginViewModel
+        val registerRequest = RegisterRequest(
+            firstName = _firstName.value,
+            lastName = _lastName.value,
+            email = _email.value,
+            password = _password.value
+        )
+        viewModelScope.launch(Dispatchers.IO) {
+
+            _registerUIState.value = UIState.Loading
+
+            val result = registerUseCase(registerRequest)
+            result.fold(
+                onSuccess = { apiResponse ->
+                    _registerUIState.value = UIState.Success(apiResponse)
+                },
+                onFailure = { error ->
+                    _registerUIState.value = UIState.Error(error.message.orEmpty())
+                }
+            )
+        }
     }
 
     fun clearValidationResults() {

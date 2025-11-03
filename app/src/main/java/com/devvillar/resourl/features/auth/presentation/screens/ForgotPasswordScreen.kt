@@ -22,6 +22,8 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -31,32 +33,38 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.devvillar.resourl.R
+import com.devvillar.resourl.core.state.UIState
 import com.devvillar.resourl.core.ui.components.CustomOutlinedTextField
+import com.devvillar.resourl.core.ui.components.StaggeredDotsWave
+import com.devvillar.resourl.core.utils.ValidationFormField.FIELD_EMAIL
+import com.devvillar.resourl.features.auth.presentation.viewmodels.ForgotPasswordViewModel
 
 @Composable
 fun ForgotPasswordScreen(
+    viewModel: ForgotPasswordViewModel = hiltViewModel(),
     onNavigateToLogin: () -> Unit = {},
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
 
-//    val registerState by viewModel.registerUIState.collectAsStateWithLifecycle()
-//    val validationState by viewModel.validationResult.collectAsStateWithLifecycle()
-//
-//    val email by viewModel.email.collectAsStateWithLifecycle()
-//
-//    val isFormValid by viewModel.isFormValid.collectAsStateWithLifecycle()
+    val forgotPasswordState by viewModel.forgotPasswordUIState.collectAsStateWithLifecycle()
+    val validationState by viewModel.validationResult.collectAsStateWithLifecycle()
 
+    val email by viewModel.email.collectAsStateWithLifecycle()
 
-//    LaunchedEffect(registerState) {
-//        when (registerState) {
-//            is UIState.Success -> onNavigateToLogin()
-//            is UIState.Error -> {
-//                snackBarHostState.showSnackbar((registerState as UIState.Error).message)
-//            }
-//            else -> {}
-//        }
-//    }
+    val isFormValid = viewModel.isFormValid.collectAsStateWithLifecycle()
+
+    LaunchedEffect(forgotPasswordState) {
+        when (forgotPasswordState) {
+            is UIState.Success -> onNavigateToLogin()
+            is UIState.Error -> {
+                snackBarHostState.showSnackbar((forgotPasswordState as UIState.Error).message)
+            }
+            else -> {}
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -100,42 +108,42 @@ fun ForgotPasswordScreen(
                 Spacer(modifier = Modifier.height(30.dp))
 
                 CustomOutlinedTextField(
-                    value = "",
-                    onValueChange = {  },
+                    value = email,
+                    onValueChange = { viewModel.onEmailChange(it) },
                     placeholderText = stringResource(R.string.recovery_hint_email),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
                     ),
-//                    isError = validationState.getError(FIELD_EMAIL) != null,
-//                    supportingText = {
-//                        validationState.getError(FIELD_EMAIL)?.let {
-//                            Text(it, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
-//                        }
-//                    },
+                    isError = validationState.getError(FIELD_EMAIL) != null,
+                    supportingText = {
+                        validationState.getError(FIELD_EMAIL)?.let {
+                            Text(it, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
+                        }
+                    },
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = {  },
-//                    enabled = isFormValid && registerState !is UIState.Loading,
+                    onClick = { viewModel.forgotPassword() },
+                    enabled = isFormValid.value && forgotPasswordState !is UIState.Loading,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp),
                 ) {
 
-//                    if (registerState is UIState.Loading) {
-//                        StaggeredDotsWave(
-//                            dotColor = MaterialTheme.colorScheme.onPrimaryFixed,
-//                            delayBetweenDots = 300
-//                        )
-//                    } else {
+                    if (forgotPasswordState is UIState.Loading) {
+                        StaggeredDotsWave(
+                            dotColor = MaterialTheme.colorScheme.onPrimaryFixed,
+                            delayBetweenDots = 300
+                        )
+                    } else {
                         Text(
                             stringResource(R.string.recovery_recovery_button),
                             color = MaterialTheme.colorScheme.onPrimaryFixed
                         )
-//                    }
+                    }
 
                 }
 

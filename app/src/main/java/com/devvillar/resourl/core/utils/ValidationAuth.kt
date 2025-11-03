@@ -42,4 +42,14 @@ class ValidationAuth @Inject constructor(
         // Return all errors found
         return ValidationResult(errors)
     }
+
+    /**
+     * Validates email and returns all errors found
+     * Shows only email error when field is invalid
+     */
+    fun validateFieldForgotPassword(email: String?): ValidationResult {
+        val errors = mutableMapOf<String, String>()
+        validationUtils.validateFieldEmail(email)?.let { errors[FIELD_EMAIL] = it }
+        return ValidationResult(errors)
+    }
 }
