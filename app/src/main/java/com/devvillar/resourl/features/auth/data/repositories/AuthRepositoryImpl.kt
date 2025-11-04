@@ -3,6 +3,7 @@ package com.devvillar.resourl.features.auth.data.repositories
 import com.devvillar.resourl.core.network.ApiResponse
 import com.devvillar.resourl.features.auth.data.datasources.remote.AuthRemoteDataSource
 import com.devvillar.resourl.features.auth.data.datasources.remote.mappers.toDomain
+import com.devvillar.resourl.features.auth.data.datasources.remote.request.AccountVerificationRequest
 import com.devvillar.resourl.features.auth.data.datasources.remote.request.LoginRequest
 import com.devvillar.resourl.features.auth.data.datasources.remote.request.RegisterRequest
 import com.devvillar.resourl.features.auth.domain.models.UserSession
@@ -18,10 +19,7 @@ class AuthRepositoryImpl @Inject constructor(
             val response = remoteDataSource.login(request)
             response.fold(
                 onSuccess = { apiResponse ->
-                    val userSessionDto = apiResponse.data
-                    if (userSessionDto == null) {
-                        return Result.failure(Exception("No user session data"))
-                    }
+                    val userSessionDto = apiResponse.data ?: return Result.failure(Exception("No user session data"))
                     val userSession = userSessionDto.toDomain()
                     Result.success(userSession)
                 },
@@ -40,6 +38,10 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun forgotPassword(email: String): Result<ApiResponse<Nothing>> {
         return remoteDataSource.forgotPassword(email)
+    }
+
+    override suspend fun accountVerification(request: AccountVerificationRequest): Result<ApiResponse<Nothing>> {
+        return remoteDataSource.accountVerification(request)
     }
 
 }

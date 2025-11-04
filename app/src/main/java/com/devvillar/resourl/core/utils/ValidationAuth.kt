@@ -52,4 +52,10 @@ class ValidationAuth @Inject constructor(
         validationUtils.validateFieldEmail(email)?.let { errors[FIELD_EMAIL] = it }
         return ValidationResult(errors)
     }
+
+    fun validateFieldAccountVerification(otpCode: String?): ValidationResult {
+        val errors = mutableMapOf<String, String>()
+        validationUtils.validateFieldOTPCode(otpCode)?.let { errors[FIELD_EMAIL] = it }
+        return ValidationResult(errors)
+    }
 }

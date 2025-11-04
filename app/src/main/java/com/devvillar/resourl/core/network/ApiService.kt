@@ -1,6 +1,7 @@
 package com.devvillar.resourl.core.network
 
 import com.devvillar.resourl.features.auth.data.datasources.remote.dto.UserSessionDto
+import com.devvillar.resourl.features.auth.data.datasources.remote.request.AccountVerificationRequest
 import com.devvillar.resourl.features.auth.data.datasources.remote.request.LoginRequest
 import com.devvillar.resourl.features.auth.data.datasources.remote.request.RegisterRequest
 import retrofit2.http.Body
@@ -25,4 +26,10 @@ interface ApiService {
 
     @POST("auth/reset-password")
     suspend fun resetPassword()
+
+    @POST("auth/account-verification")
+    suspend fun accountVerification(@Body request: AccountVerificationRequest): ApiResponse<Nothing>
+
+
+
 }

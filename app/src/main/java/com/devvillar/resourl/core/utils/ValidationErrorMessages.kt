@@ -29,5 +29,9 @@ class ValidationErrorMessages @Inject constructor(
     val firstNameWhitespaceError: String = context.getString(R.string.register_name_whitespace_error)
     val lastNameEmptyError: String = context.getString(R.string.register_last_name_empty_error)
     val lastNameWhitespaceError: String = context.getString(R.string.register_last_name_whitespace_error)
+    val otpCodeEmptyError: String = context.getString(R.string.account_verification_otp_code_empty_error)
+    val otpCodeInvalidError: String = context.getString(R.string.account_verification_otp_code_invalid_error)
+    val otpCodeLengthError: String = context.getString(R.string.account_verification_otp_code_length_error)
+
 
 }

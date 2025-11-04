@@ -20,6 +20,7 @@ class ValidationUtils @Inject constructor(
     // Constants for better maintainability
     companion object {
         const val MIN_PASSWORD_LENGTH = 8
+        const val OTP_CODE_LENGTH = 6
         val SPECIAL_CHARACTERS = setOf('!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '-', '=', '[', ']', '{', '}', '|', ';', ':', ',', '.', '<', '>', '?')
 
     }
@@ -90,6 +91,13 @@ class ValidationUtils @Inject constructor(
     fun validateFieldLastName(lastName: String?): String? = when {
         lastName.isNullOrBlank() -> validationErrorMessages.lastNameEmptyError
         lastName != lastName.trim() -> validationErrorMessages.lastNameWhitespaceError
+        else -> null
+    }
+
+    fun validateFieldOTPCode(otpCode: String?): String? = when {
+        otpCode.isNullOrBlank() -> validationErrorMessages.otpCodeEmptyError
+        !otpCode.all { it.isDigit() } -> validationErrorMessages.otpCodeInvalidError
+        otpCode.length != OTP_CODE_LENGTH -> validationErrorMessages.otpCodeLengthError
         else -> null
     }
 }

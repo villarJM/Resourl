@@ -49,6 +49,14 @@
     <string name="recovery_email_empty_error">The email can\'t be empty</string>
     <string name="recovery_email_invalid_error">Invalid email format</string>
 
+    <!-- Account Verification Screen -->
+    <string name="account_verification_title_hero">Account Verification</string>
+    <string name="account_verification_text">Enter the 6-digit code sent to your email address</string>
+    <string name="account_verification_verify_code_button">Verify Code</string>
+
+    <string name="account_verification_otp_code_empty_error">The OTP code can\'t be empty</string>
+    <string name="account_verification_otp_code_invalid_error">Invalid OTP code</string>
+    <string name="account_verification_otp_code_length_error">The OTP code must be %1$d characters long</string>
     <!-- Add Resource Screen -->
     <string name="add_resource_title">Add Resource</string>
     <string name="add_resource_header_recent">Recent Resource</string>

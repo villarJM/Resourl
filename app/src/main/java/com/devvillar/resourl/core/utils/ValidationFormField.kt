@@ -8,5 +8,6 @@ object ValidationFormField {
     const val FIELD_USERNAME = "username"
     const val FIELD_FIRST_NAME = "firstName"
     const val FIELD_LAST_NAME = "lastName"
+    const val FIELD_OTP = "otp"
 
 }
