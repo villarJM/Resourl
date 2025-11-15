@@ -1,6 +1,7 @@
 package com.devvillar.resourl.features.auth.data.repositories
 
 import com.devvillar.resourl.core.network.ApiResponse
+import com.devvillar.resourl.core.utils.PrefsManager
 import com.devvillar.resourl.features.auth.data.datasources.remote.AuthRemoteDataSource
 import com.devvillar.resourl.features.auth.data.datasources.remote.mappers.toDomain
 import com.devvillar.resourl.features.auth.data.datasources.remote.request.AccountVerificationRequest
@@ -11,24 +12,18 @@ import com.devvillar.resourl.features.auth.domain.repositories.AuthRepository
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
+    private val prefsManager: PrefsManager,
     private val remoteDataSource: AuthRemoteDataSource,
 ): AuthRepository {
 
     override suspend fun login(request: LoginRequest): Result<UserSession> {
-        return try {
-            val response = remoteDataSource.login(request)
-            response.fold(
-                onSuccess = { apiResponse ->
-                    val userSessionDto = apiResponse.data ?: return Result.failure(Exception("No user session data"))
-                    val userSession = userSessionDto.toDomain()
-                    Result.success(userSession)
-                },
-                onFailure = { error ->
-                    Result.failure(error)
-                }
-            )
-        } catch (e: Exception) {
-            Result.failure(e)
+        return remoteDataSource.login(request)
+            .mapCatching { apiResponse ->
+                val session = apiResponse.data?.toDomain()
+                    ?: throw Exception("No user session data")
+                prefsManager.saveTokens(session.accessToken, session.refreshToken)
+                session
+
         }
     }
 

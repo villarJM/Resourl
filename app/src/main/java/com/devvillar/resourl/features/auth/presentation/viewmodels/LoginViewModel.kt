@@ -3,10 +3,8 @@ package com.devvillar.resourl.features.auth.presentation.viewmodels
 import androidx.lifecycle.viewModelScope
 import com.devvillar.resourl.core.base.BaseViewModel
 import com.devvillar.resourl.core.state.UIState
-import com.devvillar.resourl.core.utils.PrefsManager
 import com.devvillar.resourl.core.utils.ValidationAuth
 import com.devvillar.resourl.core.utils.ValidationResult
-import com.devvillar.resourl.features.auth.data.datasources.remote.request.LoginRequest
 import com.devvillar.resourl.features.auth.domain.models.UserSession
 import com.devvillar.resourl.features.auth.domain.usecases.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +20,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val prefsManager: PrefsManager,
     private val validationAuth: ValidationAuth
 ) : BaseViewModel() {
 
@@ -61,19 +58,13 @@ class LoginViewModel @Inject constructor(
             return
         }
 
-        val loginRequest = LoginRequest(
-            email = _email.value,
-            password = _password.value
-        )
-
         viewModelScope.launch {
 
             _loginUIState.value = UIState.Loading
 
-            val result = loginUseCase(loginRequest)
+            val result = loginUseCase(_email.value, _password.value)
             result.fold(
                 onSuccess = { userSession ->
-                    prefsManager.saveTokens(userSession.accessToken, userSession.refreshToken)
                     _loginUIState.value = UIState.Success(userSession)
                 },
                 onFailure = { error ->
