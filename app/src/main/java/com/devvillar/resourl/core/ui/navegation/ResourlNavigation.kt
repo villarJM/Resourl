@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.devvillar.resourl.features.auth.presentation.routes.LoginRoute
 import com.devvillar.resourl.features.auth.presentation.screens.AccountVerificationScreen
 import com.devvillar.resourl.features.auth.presentation.screens.ForgotPasswordScreen
 import com.devvillar.resourl.features.auth.presentation.screens.LoginScreen
@@ -19,12 +20,15 @@ fun ResourlNavigation() {
         startDestination = Screen.Login.route
     ) {
         composable(Screen.Login.route) {
-            LoginScreen(
+            LoginRoute(
                 onNavigateToRegister = {
                     navController.navigate(Screen.Register.route)
                 },
                 onNavigateToForgotPassword = {
                     navController.navigate(Screen.ForgotPassword.route)
+                },
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home.route)
                 }
             )
         }
