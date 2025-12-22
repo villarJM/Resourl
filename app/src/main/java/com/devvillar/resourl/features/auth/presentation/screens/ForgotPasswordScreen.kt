@@ -40,32 +40,17 @@ import com.devvillar.resourl.core.state.UIState
 import com.devvillar.resourl.core.ui.components.CustomOutlinedTextField
 import com.devvillar.resourl.core.ui.components.StaggeredDotsWave
 import com.devvillar.resourl.core.utils.ValidationFormField.FIELD_EMAIL
+import com.devvillar.resourl.features.auth.presentation.events.ForgotPasswordEvent
+import com.devvillar.resourl.features.auth.presentation.states.ForgotPasswordUIState
 import com.devvillar.resourl.features.auth.presentation.viewmodels.ForgotPasswordViewModel
 
 @Composable
 fun ForgotPasswordScreen(
-    viewModel: ForgotPasswordViewModel = hiltViewModel(),
-    onNavigateToAccountVerification: () -> Unit = {},
-    onNavigateToLogin: () -> Unit = {}
-) {
-    val snackBarHostState = remember { SnackbarHostState() }
+    state: ForgotPasswordUIState,
+    snackBarHostState: SnackbarHostState,
+    onEvent: (ForgotPasswordEvent) -> Unit,
 
-    val forgotPasswordState by viewModel.forgotPasswordUIState.collectAsStateWithLifecycle()
-    val validationState by viewModel.validationResult.collectAsStateWithLifecycle()
-
-    val email by viewModel.email.collectAsStateWithLifecycle()
-
-    val isFormValid = viewModel.isFormValid.collectAsStateWithLifecycle()
-
-    LaunchedEffect(forgotPasswordState) {
-        when (forgotPasswordState) {
-            is UIState.Success -> onNavigateToAccountVerification()
-            is UIState.Error -> {
-                snackBarHostState.showSnackbar((forgotPasswordState as UIState.Error).message)
-            }
-            else -> {}
-        }
-    }
+    ) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -89,7 +74,7 @@ fun ForgotPasswordScreen(
                 FilledTonalIconButton(
                     modifier = Modifier
                         .size(50.dp),
-                    onClick = { onNavigateToLogin() }
+                    onClick = { onEvent(ForgotPasswordEvent.OnLoginClick) }
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -107,32 +92,30 @@ fun ForgotPasswordScreen(
                 Spacer(modifier = Modifier.height(30.dp))
 
                 CustomOutlinedTextField(
-                    value = email,
-                    onValueChange = { viewModel.onEmailChange(it) },
+                    value = state.email,
+                    onValueChange = { onEvent(ForgotPasswordEvent.OnEmailChange(it)) },
                     placeholderText = stringResource(R.string.recovery_hint_email),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
                     ),
-                    isError = validationState.getError(FIELD_EMAIL) != null,
+                    isError = state.emailError != null,
                     supportingText = {
-                        validationState.getError(FIELD_EMAIL)?.let {
-                            Text(it, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
-                        }
+                        Text(state.emailError.orEmpty(), color = MaterialTheme.colorScheme.error)
                     },
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = { onNavigateToAccountVerification() },
-//                    enabled = isFormValid.value && forgotPasswordState !is UIState.Loading,
+                    onClick = { onEvent(ForgotPasswordEvent.OnRecoveryClick) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp),
+                    enabled = state.isFormValid && state.isLoading.not()
                 ) {
 
-                    if (forgotPasswordState is UIState.Loading) {
+                    if (state.isLoading) {
                         StaggeredDotsWave(
                             dotColor = MaterialTheme.colorScheme.onPrimaryFixed,
                             delayBetweenDots = 300
@@ -155,5 +138,9 @@ fun ForgotPasswordScreen(
 @Composable
 @Preview(showBackground = true)
 fun ForgotPasswordScreenPreview() {
-    ForgotPasswordScreen()
+    ForgotPasswordScreen(
+        state = ForgotPasswordUIState(),
+        snackBarHostState = SnackbarHostState(),
+        onEvent = {}
+    )
 }

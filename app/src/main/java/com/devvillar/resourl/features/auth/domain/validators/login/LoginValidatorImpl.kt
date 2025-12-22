@@ -1,4 +1,4 @@
-package com.devvillar.resourl.features.auth.domain.validators
+package com.devvillar.resourl.features.auth.domain.validators.login
 
 import com.devvillar.resourl.core.validator.EmailValidator
 import com.devvillar.resourl.core.validator.PasswordValidator

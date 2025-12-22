@@ -3,7 +3,7 @@ package com.devvillar.resourl.features.auth.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devvillar.resourl.features.auth.domain.usecases.LoginUseCase
-import com.devvillar.resourl.features.auth.domain.validators.LoginValidator
+import com.devvillar.resourl.features.auth.domain.validators.login.LoginValidator
 import com.devvillar.resourl.features.auth.presentation.effects.LoginEffect
 import com.devvillar.resourl.features.auth.presentation.events.LoginEvent
 import com.devvillar.resourl.features.auth.presentation.states.LoginUIState

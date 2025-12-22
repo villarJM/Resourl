@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.devvillar.resourl.features.auth.presentation.routes.ForgotPasswordRoute
 import com.devvillar.resourl.features.auth.presentation.routes.LoginRoute
 import com.devvillar.resourl.features.auth.presentation.screens.AccountVerificationScreen
 import com.devvillar.resourl.features.auth.presentation.screens.ForgotPasswordScreen
@@ -42,7 +43,7 @@ fun ResourlNavigation() {
         }
 
         composable(Screen.ForgotPassword.route) {
-            ForgotPasswordScreen(
+            ForgotPasswordRoute(
                 onNavigateToAccountVerification = {
                     navController.navigate(Screen.AccountVerification.route)
                 },
