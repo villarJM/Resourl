@@ -49,7 +49,6 @@ fun ForgotPasswordScreen(
     state: ForgotPasswordUIState,
     snackBarHostState: SnackbarHostState,
     onEvent: (ForgotPasswordEvent) -> Unit,
-
     ) {
 
     Scaffold(

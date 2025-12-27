@@ -4,4 +4,5 @@ sealed class ForgotPasswordEvent {
     data class OnEmailChange(val email: String) : ForgotPasswordEvent()
     object OnRecoveryClick : ForgotPasswordEvent()
     object OnLoginClick : ForgotPasswordEvent()
+    object OnObserveValidation : ForgotPasswordEvent()
 }

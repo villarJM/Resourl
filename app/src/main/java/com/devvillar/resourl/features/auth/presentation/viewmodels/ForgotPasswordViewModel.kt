@@ -38,11 +38,11 @@ class ForgotPasswordViewModel @Inject constructor(
         private const val TAG = "ForgotPasswordViewModel"
     }
 
-    private val _uiState = MutableStateFlow<ForgotPasswordUIState>(ForgotPasswordUIState())
+    private val _uiState = MutableStateFlow(ForgotPasswordUIState())
     val uiState: StateFlow<ForgotPasswordUIState> = _uiState
 
     init {
-        observeValidation()
+        onEvent(ForgotPasswordEvent.OnObserveValidation)
     }
 
     private val _effect = Channel<ForgotPasswordEffect>()
@@ -53,9 +53,9 @@ class ForgotPasswordViewModel @Inject constructor(
             is ForgotPasswordEvent.OnEmailChange -> onEmailChange(event.email)
             is ForgotPasswordEvent.OnRecoveryClick -> forgotPassword()
             is ForgotPasswordEvent.OnLoginClick -> viewModelScope.launch { _effect.send(ForgotPasswordEffect.NavigateToLogin) }
+            is ForgotPasswordEvent.OnObserveValidation -> observeValidation()
         }
     }
-
 
     fun onEmailChange(newEmail: String) {
         Timber.tag(TAG).d("onEmailChange: $newEmail")

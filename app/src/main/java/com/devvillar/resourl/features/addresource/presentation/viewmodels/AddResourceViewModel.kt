@@ -1,20 +1,72 @@
 package com.devvillar.resourl.features.addresource.presentation.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.devvillar.resourl.features.addresource.domain.ResourceItem
+import com.devvillar.resourl.features.addresource.domain.validators.AddResourceValidator
+import com.devvillar.resourl.features.addresource.presentation.effects.AddResourceEffect
+import com.devvillar.resourl.features.addresource.presentation.events.AddResourceEvent
+import com.devvillar.resourl.features.addresource.presentation.states.AddResourceUIState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
-class AddResourceViewModel : ViewModel() {
+class AddResourceViewModel(
+    private val validator: AddResourceValidator
+) : ViewModel() {
 
-    private val _resourceItems = MutableLiveData<List<ResourceItem>>()
-    val resourceItems: LiveData<List<ResourceItem>> = _resourceItems
-
-    init {
-        loadMockData()
+    companion object {
+        private const val TAG = "AddResourceViewModel"
     }
 
-    private fun loadMockData() {
+    private val _uiState = MutableStateFlow(AddResourceUIState())
+    val uiState: StateFlow<AddResourceUIState> = _uiState
+
+    init {
+        onEvent(AddResourceEvent.OnObserveValidation)
+        onEvent(AddResourceEvent.GetResourceItems)
+    }
+
+    private val _effect = Channel<AddResourceEffect>()
+    val effect = _effect.receiveAsFlow()
+
+    fun onEvent(event: AddResourceEvent) {
+        when (event) {
+            is AddResourceEvent.OnUrlChange -> onUrlChange(event.url)
+            is AddResourceEvent.OnAddResourceClick -> addResource()
+            is AddResourceEvent.OnEditResourceClick -> viewModelScope.launch { _effect.send(AddResourceEffect.NavigateToEditResource) }
+            is AddResourceEvent.OnSearchResourceClick -> viewModelScope.launch { _effect.send(AddResourceEffect.NavigateToSearchResource) }
+            is AddResourceEvent.OnDeleteResourceClick -> {/*Open delete dialog*/}
+            is AddResourceEvent.GetResourceItems -> getResourceItems()
+            is AddResourceEvent.OnObserveValidation -> observeValidation()
+        }
+    }
+
+    fun onUrlChange(newUrl: String) {
+        Timber.tag(TAG).d("onUrlChange: $newUrl")
+        _uiState.update { it.copy(url = newUrl) }
+        validator.onUrlChanged(newUrl)
+    }
+
+    fun addResource() {
+
+        if (!_uiState.value.isFormValid) {
+            Timber.tag(TAG).d("onLoginClick: Form is not valid")
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+
+            Timber.tag(TAG).d("UIState is Loading in login()")
+        }
+    }
+
+    private fun getResourceItems() {
         val mockItems = listOf(
             ResourceItem(
                 id = 1,
@@ -56,6 +108,21 @@ class AddResourceViewModel : ViewModel() {
 
 
         )
-        _resourceItems.value = mockItems
+        _uiState.update { it.copy(listResourceItems = mockItems) }
+    }
+
+    private fun observeValidation() {
+        Timber.tag(TAG).d("observeValidation")
+        viewModelScope.launch {
+            validator.state.collect { state ->
+                Timber.tag(TAG).d("observeValidation: $state")
+                _uiState.update {
+                    it.copy(
+                        urlError = state.url.errorMessage,
+                        isFormValid = state.isFormValid
+                    )
+                }
+            }
+        }
     }
 }

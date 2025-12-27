@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.devvillar.resourl.features.addresource.presentation.routes.AddResourceRoute
 import com.devvillar.resourl.features.auth.presentation.routes.ForgotPasswordRoute
 import com.devvillar.resourl.features.auth.presentation.routes.LoginRoute
 import com.devvillar.resourl.features.auth.presentation.screens.AccountVerificationScreen
@@ -18,23 +19,23 @@ fun ResourlNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route
+        startDestination = ScreenNames.Login.route
     ) {
-        composable(Screen.Login.route) {
+        composable(ScreenNames.Login.route) {
             LoginRoute(
                 onNavigateToRegister = {
-                    navController.navigate(Screen.Register.route)
+                    navController.navigate(ScreenNames.Register.route)
                 },
                 onNavigateToForgotPassword = {
-                    navController.navigate(Screen.ForgotPassword.route)
+                    navController.navigate(ScreenNames.ForgotPassword.route)
                 },
                 onNavigateToHome = {
-                    navController.navigate(Screen.Home.route)
+                    navController.navigate(ScreenNames.AddResource.route)
                 }
             )
         }
 
-        composable(Screen.Register.route) {
+        composable(ScreenNames.Register.route) {
             RegisterScreen(
                 onNavigateToLogin = {
                     navController.popBackStack()
@@ -42,10 +43,10 @@ fun ResourlNavigation() {
             )
         }
 
-        composable(Screen.ForgotPassword.route) {
+        composable(ScreenNames.ForgotPassword.route) {
             ForgotPasswordRoute(
                 onNavigateToAccountVerification = {
-                    navController.navigate(Screen.AccountVerification.route)
+                    navController.navigate(ScreenNames.AccountVerification.route)
                 },
                 onNavigateToLogin = {
                     navController.popBackStack()
@@ -53,7 +54,7 @@ fun ResourlNavigation() {
             )
         }
 
-        composable(Screen.AccountVerification.route) {
+        composable(ScreenNames.AccountVerification.route) {
             AccountVerificationScreen(
                 onNavigateToLogin = {
                     navController.popBackStack()
@@ -65,13 +66,20 @@ fun ResourlNavigation() {
             )
         }
 
+        composable(ScreenNames.AddResource.route) {
+            AddResourceRoute(
+                onNavigateToSearchResource = { },
+                onNavigateToEditResource = { }
+            )
+        }
+
     }
 }
 
-sealed class Screen(val route: String) {
-    object Login : Screen("login")
-    object Register : Screen("register")
-    object ForgotPassword : Screen("forgot_password")
-    object AccountVerification : Screen("account_verification")
-    object Home : Screen("home")
+sealed class ScreenNames(val route: String) {
+    object Login : ScreenNames("login")
+    object Register : ScreenNames("register")
+    object ForgotPassword : ScreenNames("forgot_password")
+    object AccountVerification : ScreenNames("account_verification")
+    object AddResource : ScreenNames("add_resource")
 }
